@@ -13726,7 +13726,7 @@ $$<p>Here, <code>nb_samples</code> is the number of samples, or number of images
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">ImageFile</span>                            
@@ -13751,11 +13751,18 @@ $$<p>Here, <code>nb_samples</code> is the number of samples, or number of images
     <div class="prompt"></div>
 
 
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 6680/6680 [00:54&lt;00:00, 122.66it/s]
-100%|██████████| 835/835 [00:06&lt;00:00, 136.51it/s]
-100%|██████████| 836/836 [00:06&lt;00:00, 136.97it/s]
-</pre>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-2-0423aab06fc1&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> 
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg"># pre-process the data for Keras</span>
+<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>train_tensors <span class="ansi-blue-fg">=</span> paths_to_tensor<span class="ansi-blue-fg">(</span>train_files<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>astype<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;float32&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">255</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> valid_tensors <span class="ansi-blue-fg">=</span> paths_to_tensor<span class="ansi-blue-fg">(</span>valid_files<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>astype<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;float32&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">255</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> test_tensors <span class="ansi-blue-fg">=</span> paths_to_tensor<span class="ansi-blue-fg">(</span>test_files<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>astype<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;float32&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">255</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;paths_to_tensor&#39; is not defined</pre>
 </div>
 </div>
 
@@ -14384,11 +14391,11 @@ test_{network} = bottleneck_features['test']</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Obtain bottleneck features from another pre-trained CNN.</span>
-<span class="n">bottleneck_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;bottleneck_features/DogXceptionData.npz&#39;</span><span class="p">)</span>
+<span class="n">bottleneck_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;bottleneck_features/DogInceptionV3Data.npz&#39;</span><span class="p">)</span>
 <span class="n">train_Xception</span> <span class="o">=</span> <span class="n">bottleneck_features</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span>
 <span class="n">valid_Xception</span> <span class="o">=</span> <span class="n">bottleneck_features</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">]</span>
 <span class="n">test_Xception</span> <span class="o">=</span> <span class="n">bottleneck_features</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span>
@@ -14408,17 +14415,38 @@ test_{network} = bottleneck_features['test']</code></pre>
 
 </code></pre>
 <p><strong>Question 5:</strong> Outline the steps you took to get to your final CNN architecture and your reasoning at each step.  Describe why you think the architecture is suitable for the current problem.</p>
-<p><strong>Answer:</strong> I choosed Xception bottleneck features and used it as my architecture's bottom layer. this trained bottom layer contains generic low-level primitives in image(simple shapes) so could be transferred to new train target images.</p>
+<p><strong>Answer:</strong> As a result of experiment, Xception architecture showed most suitable result (I wrote each result below this cell). so i choosed Xception  bottleneck features and used it as my architecture's bottom layer. this trained bottom layer is designed for image classification on ImageNet by expert of this area, and contains generic low-level primitives in image(simple shapes) so could be transferred to new train target images. base on these informations i guessed result would be successful without no additional layer.</p>
+<p>why the chosen architecture succeeded?: because i choosed best architecture for train targets based on several experiment.</p>
+<p>why earlier attempts were not as successful?: training set was not big enough than ImageNet or architecture was not designed well for train targets.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>VGG-19 Test accuracy: 48.3254%</li>
+<li>ResNet-50 Test accuracy: 81.6986%</li>
+<li>Inception Test accuracy: 79.5455%</li>
+<li>Xception Test accuracy: 84.2105%</li>
+</ul>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Define your architecture.</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">GlobalAveragePooling2D</span><span class="p">,</span> <span class="n">BatchNormalization</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="k">import</span> <span class="n">ModelCheckpoint</span>  
+
+
+<span class="c1">### TODO: Define your architecture.</span>
 <span class="n">Xception_model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 <span class="n">Xception_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalAveragePooling2D</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="n">train_Xception</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
 <span class="n">Xception_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">133</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
@@ -14468,7 +14496,7 @@ _________________________________________________________________
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Compile the model.</span>
@@ -14491,7 +14519,7 @@ _________________________________________________________________
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Train the model.</span>
@@ -14521,78 +14549,78 @@ _________________________________________________________________
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Train on 6680 samples, validate on 835 samples
 Epoch 1/20
-6580/6680 [============================&gt;.] - ETA: 0s - loss: 1.0654 - acc: 0.7383Epoch 00000: val_loss improved from inf to 0.54428, saving model to saved_models/weights.best.Xception.hdf5
-6680/6680 [==============================] - 4s - loss: 1.0544 - acc: 0.7407 - val_loss: 0.5443 - val_acc: 0.8180
+6660/6680 [============================&gt;.] - ETA: 0s - loss: 1.1582 - acc: 0.7090Epoch 00000: val_loss improved from inf to 0.66512, saving model to saved_models/weights.best.Xception.hdf5
+6680/6680 [==============================] - 2s - loss: 1.1573 - acc: 0.7090 - val_loss: 0.6651 - val_acc: 0.8036
 Epoch 2/20
-6660/6680 [============================&gt;.] - ETA: 0s - loss: 0.3957 - acc: 0.8739Epoch 00001: val_loss improved from 0.54428 to 0.48579, saving model to saved_models/weights.best.Xception.hdf5
-6680/6680 [==============================] - 3s - loss: 0.3956 - acc: 0.8740 - val_loss: 0.4858 - val_acc: 0.8431
+6640/6680 [============================&gt;.] - ETA: 0s - loss: 0.4868 - acc: 0.8512Epoch 00001: val_loss improved from 0.66512 to 0.63373, saving model to saved_models/weights.best.Xception.hdf5
+6680/6680 [==============================] - 2s - loss: 0.4868 - acc: 0.8510 - val_loss: 0.6337 - val_acc: 0.8323
 Epoch 3/20
-6560/6680 [============================&gt;.] - ETA: 0s - loss: 0.3199 - acc: 0.8962Epoch 00002: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.3190 - acc: 0.8963 - val_loss: 0.5062 - val_acc: 0.8599
+6500/6680 [============================&gt;.] - ETA: 0s - loss: 0.3595 - acc: 0.8877Epoch 00002: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.3576 - acc: 0.8880 - val_loss: 0.6656 - val_acc: 0.8443
 Epoch 4/20
-6560/6680 [============================&gt;.] - ETA: 0s - loss: 0.2792 - acc: 0.9131Epoch 00003: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.2768 - acc: 0.9139 - val_loss: 0.5181 - val_acc: 0.8491
+6500/6680 [============================&gt;.] - ETA: 0s - loss: 0.2913 - acc: 0.9128Epoch 00003: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.2939 - acc: 0.9118 - val_loss: 0.6765 - val_acc: 0.8275
 Epoch 5/20
-6660/6680 [============================&gt;.] - ETA: 0s - loss: 0.2449 - acc: 0.9251Epoch 00004: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.2445 - acc: 0.9250 - val_loss: 0.5032 - val_acc: 0.8407
+6500/6680 [============================&gt;.] - ETA: 0s - loss: 0.2367 - acc: 0.9252Epoch 00004: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.2408 - acc: 0.9244 - val_loss: 0.6864 - val_acc: 0.8539
 Epoch 6/20
-6600/6680 [============================&gt;.] - ETA: 0s - loss: 0.2159 - acc: 0.9344Epoch 00005: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.2162 - acc: 0.9343 - val_loss: 0.5150 - val_acc: 0.8551
+6660/6680 [============================&gt;.] - ETA: 0s - loss: 0.1981 - acc: 0.9387Epoch 00005: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.1980 - acc: 0.9388 - val_loss: 0.7265 - val_acc: 0.8515
 Epoch 7/20
-6580/6680 [============================&gt;.] - ETA: 0s - loss: 0.1930 - acc: 0.9432Epoch 00006: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1937 - acc: 0.9422 - val_loss: 0.5285 - val_acc: 0.8527
+6660/6680 [============================&gt;.] - ETA: 0s - loss: 0.1662 - acc: 0.9455Epoch 00006: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.1658 - acc: 0.9457 - val_loss: 0.7486 - val_acc: 0.8383
 Epoch 8/20
-6620/6680 [============================&gt;.] - ETA: 0s - loss: 0.1788 - acc: 0.9438Epoch 00007: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1787 - acc: 0.9439 - val_loss: 0.5386 - val_acc: 0.8587
+6640/6680 [============================&gt;.] - ETA: 0s - loss: 0.1413 - acc: 0.9554Epoch 00007: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.1425 - acc: 0.9551 - val_loss: 0.7432 - val_acc: 0.8551
 Epoch 9/20
-6580/6680 [============================&gt;.] - ETA: 0s - loss: 0.1563 - acc: 0.9527Epoch 00008: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1566 - acc: 0.9528 - val_loss: 0.5736 - val_acc: 0.8491
+6660/6680 [============================&gt;.] - ETA: 0s - loss: 0.1180 - acc: 0.9610Epoch 00008: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.1180 - acc: 0.9609 - val_loss: 0.7352 - val_acc: 0.8455
 Epoch 10/20
-6560/6680 [============================&gt;.] - ETA: 0s - loss: 0.1484 - acc: 0.9530Epoch 00009: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1484 - acc: 0.9527 - val_loss: 0.5818 - val_acc: 0.8599
+6620/6680 [============================&gt;.] - ETA: 0s - loss: 0.1020 - acc: 0.9695Epoch 00009: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.1025 - acc: 0.9690 - val_loss: 0.7430 - val_acc: 0.8551
 Epoch 11/20
-6600/6680 [============================&gt;.] - ETA: 0s - loss: 0.1351 - acc: 0.9573Epoch 00010: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1349 - acc: 0.9575 - val_loss: 0.5810 - val_acc: 0.8503
+6620/6680 [============================&gt;.] - ETA: 0s - loss: 0.0859 - acc: 0.9721Epoch 00010: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0862 - acc: 0.9717 - val_loss: 0.8235 - val_acc: 0.8431
 Epoch 12/20
-6620/6680 [============================&gt;.] - ETA: 0s - loss: 0.1244 - acc: 0.9631Epoch 00011: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1248 - acc: 0.9629 - val_loss: 0.5753 - val_acc: 0.8587
+6600/6680 [============================&gt;.] - ETA: 0s - loss: 0.0771 - acc: 0.9755Epoch 00011: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0796 - acc: 0.9753 - val_loss: 0.8622 - val_acc: 0.8503
 Epoch 13/20
-6600/6680 [============================&gt;.] - ETA: 0s - loss: 0.1140 - acc: 0.9656Epoch 00012: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1137 - acc: 0.9656 - val_loss: 0.6020 - val_acc: 0.8539
+6640/6680 [============================&gt;.] - ETA: 0s - loss: 0.0668 - acc: 0.9785Epoch 00012: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0664 - acc: 0.9786 - val_loss: 0.8245 - val_acc: 0.8491
 Epoch 14/20
-6660/6680 [============================&gt;.] - ETA: 0s - loss: 0.1065 - acc: 0.9682Epoch 00013: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1062 - acc: 0.9683 - val_loss: 0.6407 - val_acc: 0.8551
+6660/6680 [============================&gt;.] - ETA: 0s - loss: 0.0625 - acc: 0.9793Epoch 00013: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0624 - acc: 0.9793 - val_loss: 0.8737 - val_acc: 0.8539
 Epoch 15/20
-6600/6680 [============================&gt;.] - ETA: 0s - loss: 0.0985 - acc: 0.9686Epoch 00014: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.1008 - acc: 0.9681 - val_loss: 0.6197 - val_acc: 0.8551
+6640/6680 [============================&gt;.] - ETA: 0s - loss: 0.0530 - acc: 0.9858Epoch 00014: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0539 - acc: 0.9856 - val_loss: 0.8796 - val_acc: 0.8527
 Epoch 16/20
-6660/6680 [============================&gt;.] - ETA: 0s - loss: 0.0902 - acc: 0.9728Epoch 00015: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.0900 - acc: 0.9729 - val_loss: 0.6316 - val_acc: 0.8551
+6500/6680 [============================&gt;.] - ETA: 0s - loss: 0.0478 - acc: 0.9855Epoch 00015: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0479 - acc: 0.9852 - val_loss: 0.9223 - val_acc: 0.8479
 Epoch 17/20
-6620/6680 [============================&gt;.] - ETA: 0s - loss: 0.0852 - acc: 0.9758Epoch 00016: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.0854 - acc: 0.9756 - val_loss: 0.6328 - val_acc: 0.8587
+6540/6680 [============================&gt;.] - ETA: 0s - loss: 0.0405 - acc: 0.9875Epoch 00016: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0409 - acc: 0.9874 - val_loss: 0.8609 - val_acc: 0.8515
 Epoch 18/20
-6580/6680 [============================&gt;.] - ETA: 0s - loss: 0.0765 - acc: 0.9783Epoch 00017: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.0761 - acc: 0.9783 - val_loss: 0.6635 - val_acc: 0.8539
+6620/6680 [============================&gt;.] - ETA: 0s - loss: 0.0388 - acc: 0.9891Epoch 00017: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0391 - acc: 0.9891 - val_loss: 0.9102 - val_acc: 0.8647
 Epoch 19/20
-6620/6680 [============================&gt;.] - ETA: 0s - loss: 0.0730 - acc: 0.9784Epoch 00018: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.0759 - acc: 0.9778 - val_loss: 0.6641 - val_acc: 0.8563
+6620/6680 [============================&gt;.] - ETA: 0s - loss: 0.0377 - acc: 0.9887Epoch 00018: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0374 - acc: 0.9888 - val_loss: 0.9065 - val_acc: 0.8527
 Epoch 20/20
-6640/6680 [============================&gt;.] - ETA: 0s - loss: 0.0697 - acc: 0.9798Epoch 00019: val_loss did not improve
-6680/6680 [==============================] - 3s - loss: 0.0693 - acc: 0.9799 - val_loss: 0.6859 - val_acc: 0.8635
+6500/6680 [============================&gt;.] - ETA: 0s - loss: 0.0320 - acc: 0.9897Epoch 00019: val_loss did not improve
+6680/6680 [==============================] - 2s - loss: 0.0315 - acc: 0.9898 - val_loss: 0.9120 - val_acc: 0.8515
 </pre>
 </div>
 </div>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[28]:</div>
+    <div class="prompt output_prompt">Out[22]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;keras.callbacks.History at 0x7fe644266160&gt;</pre>
+<pre>&lt;keras.callbacks.History at 0x7f26b2e59c88&gt;</pre>
 </div>
 
 </div>
@@ -14610,7 +14638,7 @@ Epoch 20/20
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Load the model weights with the best validation loss.</span>
@@ -14632,7 +14660,7 @@ Epoch 20/20
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Calculate classification accuracy on the test dataset.</span>
@@ -14658,7 +14686,7 @@ Epoch 20/20
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Test accuracy: 84.2105%
+<pre>Test accuracy: 79.5455%
 </pre>
 </div>
 </div>
